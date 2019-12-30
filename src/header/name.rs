@@ -70,6 +70,7 @@ macro_rules! standard_headers {
         #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
         enum StandardHeader {
             $(
+                $(#[$docs])*
                 $konst,
             )+
         }
@@ -86,6 +87,7 @@ macro_rules! standard_headers {
             fn as_str(&self) -> &'static str {
                 match *self {
                     $(
+                    $(#[$docs])*
                     StandardHeader::$konst => $name,
                     )+
                 }
@@ -95,6 +97,7 @@ macro_rules! standard_headers {
         #[cfg(test)]
         const TEST_HEADERS: &'static [(StandardHeader, &'static str)] = &[
             $(
+            $(#[$docs])*
             (StandardHeader::$konst, $name),
             )+
         ];
@@ -169,6 +172,7 @@ standard_headers! {
     /// theoretically send back a 406 (Not Acceptable) error code. But, for a
     /// better user experience, this is rarely done and the more common way is
     /// to ignore the Accept-Charset header in this case.
+    #[cfg(feature = "http")]
     (AcceptCharset, ACCEPT_CHARSET, "accept-charset");
 
     /// Advertises which content encoding the client is able to understand.
@@ -232,6 +236,7 @@ standard_headers! {
     ///
     /// In presence of an Accept-Ranges header, the browser may try to resume an
     /// interrupted download, rather than to start it from the start again.
+    #[cfg(feature = "http")]
     (AcceptRanges, ACCEPT_RANGES, "accept-ranges");
 
     /// Preflight response indicating if the response to the request can be
@@ -257,6 +262,7 @@ standard_headers! {
     /// be set on both sides (the Access-Control-Allow-Credentials header and in
     /// the XHR or Fetch request) in order for the CORS request with credentials
     /// to succeed.
+    #[cfg(feature = "http")]
     (AccessControlAllowCredentials, ACCESS_CONTROL_ALLOW_CREDENTIALS, "access-control-allow-credentials");
 
     /// Preflight response indicating permitted HTTP headers.
@@ -273,6 +279,7 @@ standard_headers! {
     ///
     /// This header is required if the request has an
     /// Access-Control-Request-Headers header.
+    #[cfg(feature = "http")]
     (AccessControlAllowHeaders, ACCESS_CONTROL_ALLOW_HEADERS, "access-control-allow-headers");
 
     /// Preflight header response indicating permitted access methods.
@@ -280,25 +287,31 @@ standard_headers! {
     /// The Access-Control-Allow-Methods response header specifies the method or
     /// methods allowed when accessing the resource in response to a preflight
     /// request.
+    #[cfg(feature = "http")]
     (AccessControlAllowMethods, ACCESS_CONTROL_ALLOW_METHODS, "access-control-allow-methods");
 
     /// Indicates whether the response can be shared with resources with the
     /// given origin.
+    #[cfg(feature = "http")]
     (AccessControlAllowOrigin, ACCESS_CONTROL_ALLOW_ORIGIN, "access-control-allow-origin");
 
     /// Indicates which headers can be exposed as part of the response by
     /// listing their names.
+    #[cfg(feature = "http")]
     (AccessControlExposeHeaders, ACCESS_CONTROL_EXPOSE_HEADERS, "access-control-expose-headers");
 
     /// Indicates how long the results of a preflight request can be cached.
+    #[cfg(feature = "http")]
     (AccessControlMaxAge, ACCESS_CONTROL_MAX_AGE, "access-control-max-age");
 
     /// Informs the server which HTTP headers will be used when an actual
     /// request is made.
+    #[cfg(feature = "http")]
     (AccessControlRequestHeaders, ACCESS_CONTROL_REQUEST_HEADERS, "access-control-request-headers");
 
     /// Informs the server know which HTTP method will be used when the actual
     /// request is made.
+    #[cfg(feature = "http")]
     (AccessControlRequestMethod, ACCESS_CONTROL_REQUEST_METHOD, "access-control-request-method");
 
     /// Indicates the time in seconds the object has been in a proxy cache.
@@ -307,6 +320,7 @@ standard_headers! {
     /// probably just fetched from the origin server; otherwise It is usually
     /// calculated as a difference between the proxy's current date and the Date
     /// general header included in the HTTP response.
+    #[cfg(feature = "http")]
     (Age, AGE, "age");
 
     /// Lists the set of methods support by a resource.
@@ -319,6 +333,7 @@ standard_headers! {
     (Allow, ALLOW, "allow");
 
     /// Advertises the availability of alternate services to clients.
+    #[cfg(feature = "http")]
     (AltSvc, ALT_SVC, "alt-svc");
 
     /// Contains the credentials to authenticate a user agent with a server.
@@ -368,6 +383,7 @@ standard_headers! {
     /// to HTTP forms and POST requests. Only the value form-data, as well as
     /// the optional directive name and filename, can be used in the HTTP
     /// context.
+    #[cfg(feature = "http")]
     (ContentDisposition, CONTENT_DISPOSITION, "content-disposition");
 
     /// Used to compress the media-type.
@@ -417,6 +433,7 @@ standard_headers! {
     (ContentLocation, CONTENT_LOCATION, "content-location");
 
     /// Indicates where in a full body message a partial message belongs.
+    #[cfg(feature = "http")]
     (ContentRange, CONTENT_RANGE, "content-range");
 
     /// Allows controlling resources the user agent is allowed to load for a
@@ -425,6 +442,7 @@ standard_headers! {
     /// With a few exceptions, policies mostly involve specifying server origins
     /// and script endpoints. This helps guard against cross-site scripting
     /// attacks (XSS).
+    #[cfg(feature = "http")]
     (ContentSecurityPolicy, CONTENT_SECURITY_POLICY, "content-security-policy");
 
     /// Allows experimenting with policies by monitoring their effects.
@@ -433,6 +451,7 @@ standard_headers! {
     /// developers to experiment with policies by monitoring (but not enforcing)
     /// their effects. These violation reports consist of JSON documents sent
     /// via an HTTP POST request to the specified URI.
+    #[cfg(feature = "http")]
     (ContentSecurityPolicyReportOnly, CONTENT_SECURITY_POLICY_REPORT_ONLY, "content-security-policy-report-only");
 
     /// Used to indicate the media type of the resource.
@@ -452,12 +471,18 @@ standard_headers! {
     ///
     /// The Cookie header might be omitted entirely, if the privacy setting of
     /// the browser are set to block them, for example.
+    #[cfg(feature = "http")]
     (Cookie, COOKIE, "cookie");
+
+    /// Contains the sequence number of the message.
+    #[cfg(feature = "rtsp")]
+    (CSeq, CSEQ, "cseq");
 
     /// Indicates the client's tracking preference.
     ///
     /// This header lets users indicate whether they would prefer privacy rather
     /// than personalized content.
+    #[cfg(feature = "http")]
     (Dnt, DNT, "dnt");
 
     /// Contains the date and time at which the message was originated.
@@ -477,6 +502,7 @@ standard_headers! {
     /// to quickly determine whether two representations of a resource are the
     /// same, but they might also be set to persist indefinitely by a tracking
     /// server.
+    #[cfg(feature = "http")]
     (Etag, ETAG, "etag");
 
     /// Indicates expectations that need to be fulfilled by the server in order
@@ -496,6 +522,7 @@ standard_headers! {
     ///
     /// No common browsers send the Expect header, but some other clients such
     /// as cURL do so by default.
+    #[cfg(feature = "http")]
     (Expect, EXPECT, "expect");
 
     /// Contains the date/time after which the response is considered stale.
@@ -517,6 +544,7 @@ standard_headers! {
     /// location-dependent content and by design it exposes privacy sensitive
     /// information, such as the IP address of the client. Therefore the user's
     /// privacy must be kept in mind when deploying this header.
+    #[cfg(feature = "http")]
     (Forwarded, FORWARDED, "forwarded");
 
     /// Contains an Internet email address for a human user who controls the
@@ -562,6 +590,7 @@ standard_headers! {
     /// that has been done since the original resource was fetched. If the
     /// request cannot be fulfilled, the 412 (Precondition Failed) response is
     /// returned.
+    #[cfg(feature = "http")]
     (IfMatch, IF_MATCH, "if-match");
 
     /// Makes a request conditional based on the modification date.
@@ -615,6 +644,7 @@ standard_headers! {
     /// guaranteeing that another upload didn't happen before, losing the data
     /// of the previous put; this problems is the variation of the lost update
     /// problem.
+    #[cfg(feature = "http")]
     (IfNoneMatch, IF_NONE_MATCH, "if-none-match");
 
     /// Makes a request conditional based on range.
@@ -631,6 +661,7 @@ standard_headers! {
     /// The most common use case is to resume a download, to guarantee that the
     /// stored resource has not been modified since the last fragment has been
     /// received.
+    #[cfg(feature = "http")]
     (IfRange, IF_RANGE, "if-range");
 
     /// Makes the request conditional based on the last modification date.
@@ -652,6 +683,7 @@ standard_headers! {
     /// * In conjunction with a range request with a If-Range header, it can be
     /// used to ensure that the new fragment requested comes from an unmodified
     /// document.
+    #[cfg(feature = "http")]
     (IfUnmodifiedSince, IF_UNMODIFIED_SINCE, "if-unmodified-since");
 
     /// Content-Types that are acceptable for the response.
@@ -690,10 +722,12 @@ standard_headers! {
     /// when content negotiation happened, without the need of further content
     /// negotiation. Location is a header associated with the response, while
     /// Content-Location is associated with the entity returned.
+    #[cfg(feature = "http")]
     (Location, LOCATION, "location");
 
     /// Indicates the max number of intermediaries the request should be sent
     /// through.
+    #[cfg(feature = "http")]
     (MaxForwards, MAX_FORWARDS, "max-forwards");
 
     /// Indicates where a fetch originates from.
@@ -702,6 +736,7 @@ standard_headers! {
     /// sent with CORS requests, as well as with POST requests. It is similar to
     /// the Referer header, but, unlike this header, it doesn't disclose the
     /// whole path.
+    #[cfg(feature = "http")]
     (Origin, ORIGIN, "origin");
 
     /// HTTP/1.0 header usually used for backwards compatibility.
@@ -710,6 +745,7 @@ standard_headers! {
     /// that may have various effects along the request-response chain. It is
     /// used for backwards compatibility with HTTP/1.0 caches where the
     /// Cache-Control HTTP/1.1 header is not yet present.
+    #[cfg(feature = "http")]
     (Pragma, PRAGMA, "pragma");
 
     /// Defines the authentication method that should be used to gain access to
@@ -743,6 +779,7 @@ standard_headers! {
     /// or several keys are pinned and none of them are used by the server, the
     /// browser will not accept the response as legitimate, and will not display
     /// it.
+    #[cfg(feature = "http")]
     (PublicKeyPins, PUBLIC_KEY_PINS, "public-key-pins");
 
     /// Sends reports of pinning violation to the report-uri specified in the
@@ -750,6 +787,7 @@ standard_headers! {
     ///
     /// Unlike `Public-Key-Pins`, this header still allows browsers to connect
     /// to the server if the pinning is violated.
+    #[cfg(feature = "http")]
     (PublicKeyPinsReportOnly, PUBLIC_KEY_PINS_REPORT_ONLY, "public-key-pins-report-only");
 
     /// Indicates the part of a document that the server should return.
@@ -776,6 +814,7 @@ standard_headers! {
 
     /// Informs the web browser that the current page or frame should be
     /// refreshed.
+    #[cfg(feature = "http")]
     (Refresh, REFRESH, "refresh");
 
     /// The Retry-After response HTTP header indicates how long the user agent
@@ -794,6 +833,7 @@ standard_headers! {
     /// opening handshake. It is sent from the server to the client to
     /// confirm that the server is willing to initiate the WebSocket
     /// connection.
+    #[cfg(feature = "http")]
     (SecWebSocketAccept, SEC_WEBSOCKET_ACCEPT, "sec-websocket-accept");
 
     /// The |Sec-WebSocket-Extensions| header field is used in the WebSocket
@@ -801,6 +841,7 @@ standard_headers! {
     /// server, and then subsequently sent from the server to the client, to
     /// agree on a set of protocol-level extensions to use for the duration
     /// of the connection.
+    #[cfg(feature = "http")]
     (SecWebSocketExtensions, SEC_WEBSOCKET_EXTENSIONS, "sec-websocket-extensions");
 
     /// The |Sec-WebSocket-Key| header field is used in the WebSocket opening
@@ -810,6 +851,7 @@ standard_headers! {
     /// does not accept connections from non-WebSocket clients (e.g., HTTP
     /// clients) that are being abused to send data to unsuspecting WebSocket
     /// servers.
+    #[cfg(feature = "http")]
     (SecWebSocketKey, SEC_WEBSOCKET_KEY, "sec-websocket-key");
 
     /// The |Sec-WebSocket-Protocol| header field is used in the WebSocket
@@ -817,6 +859,7 @@ standard_headers! {
     /// from the server to the client to confirm the subprotocol of the
     /// connection.  This enables scripts to both select a subprotocol and be
     /// sure that the server agreed to serve that subprotocol.
+    #[cfg(feature = "http")]
     (SecWebSocketProtocol, SEC_WEBSOCKET_PROTOCOL, "sec-websocket-protocol");
 
     /// The |Sec-WebSocket-Version| header field is used in the WebSocket
@@ -825,6 +868,7 @@ standard_headers! {
     /// servers to correctly interpret the opening handshake and subsequent
     /// data being sent from the data, and close the connection if the server
     /// cannot interpret that data in a safe manner.
+    #[cfg(feature = "http")]
     (SecWebSocketVersion, SEC_WEBSOCKET_VERSION, "sec-websocket-version");
 
     /// Contains information about the software used by the origin server to
@@ -837,6 +881,7 @@ standard_headers! {
     (Server, SERVER, "server");
 
     /// Used to send cookies from the server to the user agent.
+    #[cfg(feature = "http")]
     (SetCookie, SET_COOKIE, "set-cookie");
 
     /// Tells the client to communicate with HTTPS instead of using HTTP.
@@ -850,10 +895,12 @@ standard_headers! {
     /// recipients and you that don't have to specify "chunked" using the TE
     /// header. However, it is useful for setting if the client is accepting
     /// trailer fields in a chunked transfer coding using the "trailers" value.
+    #[cfg(feature = "http")]
     (Te, TE, "te");
 
     /// Allows the sender to include additional fields at the end of chunked
     /// messages.
+    #[cfg(feature = "http")]
     (Trailer, TRAILER, "trailer");
 
     /// Specifies the form of encoding used to safely transfer the entity to the
@@ -868,6 +915,7 @@ standard_headers! {
     /// When present on a response to a `HEAD` request that has no body, it
     /// indicates the value that would have applied to the corresponding `GET`
     /// message.
+    #[cfg(feature = "http")]
     (TransferEncoding, TRANSFER_ENCODING, "transfer-encoding");
 
     /// Contains a string that allows identifying the requesting client's
@@ -875,10 +923,12 @@ standard_headers! {
     (UserAgent, USER_AGENT, "user-agent");
 
     /// Used as part of the exchange to upgrade the protocol.
+    #[cfg(feature = "http")]
     (Upgrade, UPGRADE, "upgrade");
 
     /// Sends a signal to the server expressing the client’s preference for an
     /// encrypted and authenticated response.
+    #[cfg(feature = "http")]
     (UpgradeInsecureRequests, UPGRADE_INSECURE_REQUESTS, "upgrade-insecure-requests");
 
     /// Determines how to match future requests with cached responses.
@@ -891,6 +941,7 @@ standard_headers! {
     ///
     /// The `vary` header should be set on a 304 Not Modified response exactly
     /// like it would have been set on an equivalent 200 OK response.
+    #[cfg(feature = "http")]
     (Vary, VARY, "vary");
 
     /// Added by proxies to track routing.
@@ -927,6 +978,7 @@ standard_headers! {
     /// less aggressive.
     ///
     /// Site security testers usually expect this header to be set.
+    #[cfg(feature = "http")]
     (XContentTypeOptions, X_CONTENT_TYPE_OPTIONS, "x-content-type-options");
 
     /// Controls DNS prefetching.
@@ -940,6 +992,7 @@ standard_headers! {
     /// This prefetching is performed in the background, so that the DNS is
     /// likely to have been resolved by the time the referenced items are
     /// needed. This reduces latency when the user clicks a link.
+    #[cfg(feature = "http")]
     (XDnsPrefetchControl, X_DNS_PREFETCH_CONTROL, "x-dns-prefetch-control");
 
     /// Indicates whether or not a browser should be allowed to render a page in
@@ -950,6 +1003,7 @@ standard_headers! {
     ///
     /// The added security is only provided if the user accessing the document
     /// is using a browser supporting `x-frame-options`.
+    #[cfg(feature = "http")]
     (XFrameOptions, X_FRAME_OPTIONS, "x-frame-options");
 
     /// Stop pages from loading when an XSS attack is detected.
@@ -961,6 +1015,7 @@ standard_headers! {
     /// implement a strong Content-Security-Policy that disables the use of
     /// inline JavaScript ('unsafe-inline'), they can still provide protections
     /// for users of older web browsers that don't yet support CSP.
+    #[cfg(feature = "http")]
     (XXssProtection, X_XSS_PROTECTION, "x-xss-protection");
 }
 
@@ -1160,6 +1215,12 @@ fn parse_hdr<'a>(
             } else if eq!(b == b'v' b'a' b'r' b'y') {
                 Ok(Vary.into())
             } else {
+                #[cfg(feature = "rtsp")]
+                {
+                    if eq!(b == b'c' b's' b'e' b'q') {
+                        return Ok(CSeq.into());
+                    }
+                }
                 validate(b, len)
             }
         }

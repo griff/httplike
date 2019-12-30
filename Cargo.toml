@@ -16,11 +16,17 @@ authors = [
   "Brian Olsen <brian@maven-group.org>",
 ]
 description = """
-A set of types for representing HTTP requests and responses.
+A set of types for representing HTTP, RTSP and SIP requests and responses.
 """
-keywords = ["http"]
+keywords = ["http", "rtsp", "sip"]
 categories = ["web-programming"]
 edition = "2018"
+
+[features]
+default = ["http"]
+http = []
+rtsp = []
+sip = []
 
 [dependencies]
 bytes = "0.5"

@@ -163,6 +163,10 @@ pub use self::name::{
     X_FRAME_OPTIONS,
     X_XSS_PROTECTION,
 };
+#[cfg(feature = "rtsp")]
+pub use self::name::{
+    CSEQ,
+};
 
 /// Maximum length of a header name
 ///

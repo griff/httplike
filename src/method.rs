@@ -57,9 +57,32 @@ enum Inner {
     Put,
     Delete,
     Head,
+    #[cfg(feature = "http")]
     Trace,
+    #[cfg(feature = "http")]
     Connect,
+    #[cfg(feature = "http")]
     Patch,
+    #[cfg(feature = "rtsp")]
+    Describe,
+    #[cfg(feature = "rtsp")]
+    Announce,
+    #[cfg(feature = "rtsp")]
+    GetParameter,
+    #[cfg(feature = "rtsp")]
+    SetParameter,
+    #[cfg(feature = "rtsp")]
+    Pause,
+    #[cfg(feature = "rtsp")]
+    Play,
+    #[cfg(feature = "rtsp")]
+    Record,
+    #[cfg(feature = "rtsp")]
+    Redirect,
+    #[cfg(feature = "rtsp")]
+    Setup,
+    #[cfg(feature = "rtsp")]
+    Teardown,
     // If the extension is short enough, store it inline
     ExtensionInline([u8; MAX_INLINE], u8),
     // Otherwise, allocate it
@@ -130,13 +153,56 @@ impl Method {
     pub const OPTIONS: Method = Method(Options);
 
     /// CONNECT
+    #[cfg(feature = "http")]
     pub const CONNECT: Method = Method(Connect);
 
     /// PATCH
+    #[cfg(feature = "http")]
     pub const PATCH: Method = Method(Patch);
 
     /// TRACE
+    #[cfg(feature = "http")]
     pub const TRACE: Method = Method(Trace);
+
+    /// DESCRIBE
+    #[cfg(feature = "rtsp")]
+    pub const DESCRIBE: Method = Method(Describe);
+
+    /// ANNOUNCE
+    #[cfg(feature = "rtsp")]
+    pub const ANNOUNCE: Method = Method(Announce);
+
+    /// GET_PARAMETER
+    #[cfg(feature = "rtsp")]
+    pub const GET_PARAMETER: Method = Method(GetParameter);
+
+    /// SET_PARAMETER
+    #[cfg(feature = "rtsp")]
+    pub const SET_PARAMETER: Method = Method(SetParameter);
+
+    /// PAUSE
+    #[cfg(feature = "rtsp")]
+    pub const PAUSE: Method = Method(Pause);
+
+    /// PLAY
+    #[cfg(feature = "rtsp")]
+    pub const PLAY: Method = Method(Play);
+
+    /// RECORD
+    #[cfg(feature = "rtsp")]
+    pub const RECORD: Method = Method(Record);
+
+    /// REDIRECT
+    #[cfg(feature = "rtsp")]
+    pub const REDIRECT: Method = Method(Redirect);
+
+    /// SETUP
+    #[cfg(feature = "rtsp")]
+    pub const SETUP: Method = Method(Setup);
+
+    /// TEARDOWN
+    #[cfg(feature = "rtsp")]
+    pub const TEARDOWN: Method = Method(Teardown);
 
     /// Converts a slice of bytes to an HTTP method.
     pub fn from_bytes(src: &[u8]) -> Result<Method, InvalidMethod> {
@@ -150,20 +216,45 @@ impl Method {
             4 => match src {
                 b"POST" => Ok(Method(Post)),
                 b"HEAD" => Ok(Method(Head)),
+                #[cfg(feature = "rtsp")]
+                b"PLAY" => Ok(Method(Play)),
                 _ => Method::extension_inline(src),
             },
             5 => match src {
+                #[cfg(feature = "http")]
                 b"PATCH" => Ok(Method(Patch)),
+                #[cfg(feature = "http")]
                 b"TRACE" => Ok(Method(Trace)),
+                #[cfg(feature = "rtsp")]
+                b"SETUP" => Ok(Method(Setup)),
+                #[cfg(feature = "rtsp")]
+                b"PAUSE" => Ok(Method(Pause)),
                 _ => Method::extension_inline(src),
             },
             6 => match src {
                 b"DELETE" => Ok(Method(Delete)),
+                #[cfg(feature = "rtsp")]
+                b"RECORD" => Ok(Method(Record)),
                 _ => Method::extension_inline(src),
             },
             7 => match src {
                 b"OPTIONS" => Ok(Method(Options)),
+                #[cfg(feature = "http")]
                 b"CONNECT" => Ok(Method(Connect)),
+                _ => Method::extension_inline(src),
+            },
+            #[cfg(feature = "rtsp")]
+            8 => match src {
+                b"TEARDOWN" => Ok(Method(Teardown)),
+                b"DESCRIBE" => Ok(Method(Describe)),
+                b"ANNOUNCE" => Ok(Method(Announce)),
+                b"REDIRECT" => Ok(Method(Redirect)),
+                _ => Method::extension_inline(src),
+            },
+            #[cfg(feature = "rtsp")]
+            13 => match src {
+                b"GET_PARAMETER" => Ok(Method(GetParameter)),
+                b"SET_PARAMETER" => Ok(Method(SetParameter)),
                 _ => Method::extension_inline(src),
             },
             _ => {
@@ -195,8 +286,12 @@ impl Method {
     /// for more words.
     pub fn is_safe(&self) -> bool {
         match self.0 {
-            Get | Head | Options | Trace => true,
-            _ => false,
+            Get | Head | Options => true,
+            #[cfg(feature = "http")]
+            Trace => true,
+            #[cfg(feature = "rtsp")]
+            Describe | GetParameter => true,
+            _ => false
         }
     }
 
@@ -222,9 +317,32 @@ impl Method {
             Put => "PUT",
             Delete => "DELETE",
             Head => "HEAD",
+            #[cfg(feature = "http")]
             Trace => "TRACE",
+            #[cfg(feature = "http")]
             Connect => "CONNECT",
+            #[cfg(feature = "http")]
             Patch => "PATCH",
+            #[cfg(feature = "rtsp")]
+            Describe => "DESCRIBE",
+            #[cfg(feature = "rtsp")]
+            Announce => "ANNOUNCE",
+            #[cfg(feature = "rtsp")]
+            GetParameter => "GET_PARAMETER",
+            #[cfg(feature = "rtsp")]
+            SetParameter => "SET_PARAMETER",
+            #[cfg(feature = "rtsp")]
+            Pause => "Pause",
+            #[cfg(feature = "rtsp")]
+            Play => "PLAY",
+            #[cfg(feature = "rtsp")]
+            Record => "RECORD",
+            #[cfg(feature = "rtsp")]
+            Redirect => "REDIRECT",
+            #[cfg(feature = "rtsp")]
+            Setup => "SETUP",
+            #[cfg(feature = "rtsp")]
+            Teardown => "TEARDOWN",
             ExtensionInline(ref data, len) => unsafe {
                 str::from_utf8_unchecked(&data[..len as usize])
             },
@@ -386,6 +504,12 @@ fn test_method_eq() {
 
     assert_eq!(&Method::GET, Method::GET);
     assert_eq!(Method::GET, &Method::GET);
+
+    #[cfg(feature = "rtsp")]
+    {
+        assert_eq!("RECORD", Method::RECORD);
+        assert_eq!("RECORD", &Method::RECORD);
+    }
 }
 
 #[test]

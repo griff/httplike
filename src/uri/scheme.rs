@@ -23,19 +23,39 @@ pub(super) enum Scheme2<T = Box<ByteStr>> {
 
 #[derive(Copy, Clone, Debug)]
 pub(super) enum Protocol {
+    #[cfg(feature = "http")]
     Http,
+    #[cfg(feature = "http")]
     Https,
+    #[cfg(feature = "rtsp")]
+    Rtsp,
+    #[cfg(feature = "rtsp")]
+    Rtsps,
 }
 
 impl Scheme {
     /// HTTP protocol scheme
+    #[cfg(feature = "http")]
     pub const HTTP: Scheme = Scheme {
         inner: Scheme2::Standard(Protocol::Http),
     };
 
     /// HTTP protocol over TLS.
+    #[cfg(feature = "http")]
     pub const HTTPS: Scheme = Scheme {
         inner: Scheme2::Standard(Protocol::Https),
+    };
+
+    /// RTSP protocol scheme
+    #[cfg(feature = "rtsp")]
+    pub const RTSP: Scheme = Scheme {
+        inner: Scheme2::Standard(Protocol::Rtsp),
+    };
+
+    /// RTSPS protocol scheme
+    #[cfg(feature = "rtsp")]
+    pub const RTSPS: Scheme = Scheme {
+        inner: Scheme2::Standard(Protocol::Rtsps),
     };
 
     pub(super) fn empty() -> Self {
@@ -59,8 +79,14 @@ impl Scheme {
         use self::Scheme2::*;
 
         match self.inner {
+            #[cfg(feature = "http")]
             Standard(Http) => "http",
+            #[cfg(feature = "http")]
             Standard(Https) => "https",
+            #[cfg(feature = "rtsp")]
+            Standard(Rtsp) => "rtsp",
+            #[cfg(feature = "rtsp")]
+            Standard(Rtsps) => "rtsps",
             Other(ref v) => &v[..],
             None => unreachable!(),
         }
@@ -127,8 +153,14 @@ impl PartialEq for Scheme {
         use self::Scheme2::*;
 
         match (&self.inner, &other.inner) {
+            #[cfg(feature = "http")]
             (&Standard(Http), &Standard(Http)) => true,
+            #[cfg(feature = "http")]
             (&Standard(Https), &Standard(Https)) => true,
+            #[cfg(feature = "rtsp")]
+            (&Standard(Rtsp), &Standard(Rtsp)) => true,
+            #[cfg(feature = "rtsp")]
+            (&Standard(Rtsps), &Standard(Rtsps)) => true,
             (&Other(ref a), &Other(ref b)) => a.eq_ignore_ascii_case(b),
             (&None, _) | (_, &None) => unreachable!(),
             _ => false,
@@ -168,8 +200,14 @@ impl Hash for Scheme {
     {
         match self.inner {
             Scheme2::None => (),
+            #[cfg(feature = "http")]
             Scheme2::Standard(Protocol::Http) => state.write_u8(1),
+            #[cfg(feature = "http")]
             Scheme2::Standard(Protocol::Https) => state.write_u8(2),
+            #[cfg(feature = "rtsp")]
+            Scheme2::Standard(Protocol::Rtsp) => state.write_u8(3),
+            #[cfg(feature = "rtsp")]
+            Scheme2::Standard(Protocol::Rtsps) => state.write_u8(4),
             Scheme2::Other(ref other) => {
                 other.len().hash(state);
                 for &b in other.as_bytes() {
@@ -228,8 +266,14 @@ const SCHEME_CHARS: [u8; 256] = [
 impl Scheme2<usize> {
     fn parse_exact(s: &[u8]) -> Result<Scheme2<()>, InvalidUri> {
         match s {
+            #[cfg(feature = "http")]
             b"http" => Ok(Protocol::Http.into()),
+            #[cfg(feature = "http")]
             b"https" => Ok(Protocol::Https.into()),
+            #[cfg(feature = "rtsp")]
+            b"rtsp" => Ok(Protocol::Rtsp.into()),
+            #[cfg(feature = "rtsp")]
+            b"rtsps" => Ok(Protocol::Rtsps.into()),
             _ => {
                 if s.len() > MAX_SCHEME_LEN {
                     return Err(ErrorKind::SchemeTooLong.into());
@@ -255,17 +299,38 @@ impl Scheme2<usize> {
 
     pub(super) fn parse(s: &[u8]) -> Result<Scheme2<usize>, InvalidUri> {
         if s.len() >= 7 {
-            // Check for HTTP
-            if s[..7].eq_ignore_ascii_case(b"http://") {
-                // Prefix will be striped
-                return Ok(Protocol::Http.into());
+            #[cfg(feature = "http")]
+            {
+                // Check for HTTP
+                if s[..7].eq_ignore_ascii_case(b"http://") {
+                    // Prefix will be striped
+                    return Ok(Protocol::Http.into());
+                }
+            }
+            #[cfg(feature = "rtsp")]
+            {
+                // Check for RTSP
+                if s[..7].eq_ignore_ascii_case(b"rtsp://") {
+                    // Prefix will be striped
+                    return Ok(Protocol::Rtsp.into());
+                }
             }
         }
 
         if s.len() >= 8 {
-            // Check for HTTPs
-            if s[..8].eq_ignore_ascii_case(b"https://") {
-                return Ok(Protocol::Https.into());
+            #[cfg(feature = "http")]
+            {
+                // Check for HTTPs
+                if s[..8].eq_ignore_ascii_case(b"https://") {
+                    return Ok(Protocol::Https.into());
+                }
+            }
+            #[cfg(feature = "rtsp")]
+            {
+                // Check for RTSPs
+                if s[..8].eq_ignore_ascii_case(b"rtsps://") {
+                    return Ok(Protocol::Rtsps.into());
+                }
             }
         }
 
@@ -306,8 +371,14 @@ impl Scheme2<usize> {
 impl Protocol {
     pub(super) fn len(&self) -> usize {
         match *self {
+            #[cfg(feature = "http")]
             Protocol::Http => 4,
+            #[cfg(feature = "http")]
             Protocol::Https => 5,
+            #[cfg(feature = "rtsp")]
+            Protocol::Rtsp => 4,
+            #[cfg(feature = "rtsp")]
+            Protocol::Rtsps => 5,
         }
     }
 }

@@ -295,6 +295,7 @@ macro_rules! status_codes {
         fn canonical_reason(num: u16) -> Option<&'static str> {
             match num {
                 $(
+                $(#[$docs])*
                 $num => Some($phrase),
                 )+
                 _ => None
@@ -345,6 +346,11 @@ status_codes! {
     /// 226 IM Used
     /// [[RFC3229](https://tools.ietf.org/html/rfc3229)]
     (226, IM_USED, "IM Used");
+
+    /// 250 Low on Storage Space
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (250, LOW_ON_STORAGE_SPACE, "Low on Storage Space");
 
     /// 300 Multiple Choices
     /// [[RFC7231, Section 6.4.1](https://tools.ietf.org/html/rfc7231#section-6.4.1)]
@@ -459,7 +465,68 @@ status_codes! {
 
     /// 451 Unavailable For Legal Reasons
     /// [[RFC7725](http://tools.ietf.org/html/rfc7725)]
+    #[cfg(all(feature = "http", not(feature = "rtsp")))]
     (451, UNAVAILABLE_FOR_LEGAL_REASONS, "Unavailable For Legal Reasons");
+
+    /// 451 Parameter Not Understood
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (451, PARAMETER_NOT_UNDERSTOOD, "Parameter Not Understood");
+
+    /// 452 Conference Not Found
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (452, CONFERENCE_NOT_FOUND, "Conference Not Found");
+
+    /// 453 Not Enough Bandwidth
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (453, NOT_ENOUGH_BANDWIDTH, "Not Enough Bandwidth");
+
+    /// 454 Session Not Found
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (454, SESSION_NOT_FOUND, "Session Not Found");
+
+    /// 455 Method Not Valid in This State
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (455, METHOD_NOT_VALID_IN_THIS_STATE, "Method Not Valid in This State");
+
+    /// 456 Header Field Not Valid for Resource
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (456, HEADER_FIELD_NOT_VALID_FOR_RESOURCE, "Header Field Not Valid for Resource");
+
+    /// 457 Invalid Range
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (457, INVALID_RANGE, "Invalid Range");
+
+    /// 458 Parameter Is Read-Only
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (458, PARAMETER_IS_READ_ONLY, "Parameter Is Read-Only");
+
+    /// 459 Aggregate Operation Not Allowed
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (459, AGGREGATE_OPERATION_NOT_ALLOWED, "Aggregate Operation Not Allowed");
+
+    /// 460 Only Aggregate Operation Allowed
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (460, ONLY_AGGREGATE_OPERATION_ALLOWED, "Only Aggregate Operation Allowed");
+
+    /// 461 Unsupported Transport
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (461, UNSUPPORTED_TRANSPORT, "Unsupported Transport");
+
+    /// 462 Destination Unreachable
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (462, DESTINATION_UNREACHABLE, "Destination Unreachable");
 
     /// 500 Internal Server Error
     /// [[RFC7231, Section 6.6.1](https://tools.ietf.org/html/rfc7231#section-6.6.1)]
@@ -495,6 +562,11 @@ status_codes! {
     /// 511 Network Authentication Required
     /// [[RFC6585](https://tools.ietf.org/html/rfc6585)]
     (511, NETWORK_AUTHENTICATION_REQUIRED, "Network Authentication Required");
+
+    /// 551 Option not supported
+    /// [[RFC2326](https://tools.ietf.org/html/rfc2326)]
+    #[cfg(feature = "rtsp")]
+    (551, OPTION_NOT_SUPPORTED, "Option not supported");
 }
 
 impl InvalidStatusCode {
