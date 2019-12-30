@@ -53,7 +53,7 @@ impl Extensions {
     /// # Example
     ///
     /// ```
-    /// # use http::Extensions;
+    /// # use httplike::Extensions;
     /// let mut ext = Extensions::new();
     /// assert!(ext.insert(5i32).is_none());
     /// assert!(ext.insert(4u8).is_none());
@@ -76,7 +76,7 @@ impl Extensions {
     /// # Example
     ///
     /// ```
-    /// # use http::Extensions;
+    /// # use httplike::Extensions;
     /// let mut ext = Extensions::new();
     /// assert!(ext.get::<i32>().is_none());
     /// ext.insert(5i32);
@@ -95,7 +95,7 @@ impl Extensions {
     /// # Example
     ///
     /// ```
-    /// # use http::Extensions;
+    /// # use httplike::Extensions;
     /// let mut ext = Extensions::new();
     /// ext.insert(String::from("Hello"));
     /// ext.get_mut::<String>().unwrap().push_str(" World");
@@ -116,7 +116,7 @@ impl Extensions {
     /// # Example
     ///
     /// ```
-    /// # use http::Extensions;
+    /// # use httplike::Extensions;
     /// let mut ext = Extensions::new();
     /// ext.insert(5i32);
     /// assert_eq!(ext.remove::<i32>(), Some(5i32));
@@ -139,7 +139,7 @@ impl Extensions {
     /// # Example
     ///
     /// ```
-    /// # use http::Extensions;
+    /// # use httplike::Extensions;
     /// let mut ext = Extensions::new();
     /// ext.insert(5i32);
     /// ext.clear();

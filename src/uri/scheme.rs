@@ -49,7 +49,7 @@ impl Scheme {
     /// # Examples
     ///
     /// ```
-    /// # use http::uri::*;
+    /// # use httplike::uri::*;
     /// let scheme: Scheme = "http".parse().unwrap();
     /// assert_eq!(scheme.as_str(), "http");
     /// ```
@@ -143,7 +143,7 @@ impl Eq for Scheme {}
 /// # Examples
 ///
 /// ```
-/// # use http::uri::Scheme;
+/// # use httplike::uri::Scheme;
 /// let scheme: Scheme = "HTTP".parse().unwrap();
 /// assert_eq!(scheme, *"http");
 /// ```

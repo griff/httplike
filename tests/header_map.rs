@@ -1,5 +1,5 @@
-use http::header::*;
-use http::*;
+use httplike::header::*;
+use httplike::*;
 
 #[test]
 fn smoke() {

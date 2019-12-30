@@ -2,7 +2,7 @@
 
 extern crate test;
 
-use http::Uri;
+use httplike::Uri;
 use test::Bencher;
 
 #[bench]

@@ -1,4 +1,4 @@
-use http::*;
+use httplike::*;
 
 #[test]
 fn from_bytes() {

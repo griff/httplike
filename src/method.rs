@@ -2,13 +2,13 @@
 //!
 //! This module contains HTTP-method related structs and errors and such. The
 //! main type of this module, `Method`, is also reexported at the root of the
-//! crate as `http::Method` and is intended for import through that location
+//! crate as `httplike::Method` and is intended for import through that location
 //! primarily.
 //!
 //! # Examples
 //!
 //! ```
-//! use http::Method;
+//! use httplike::Method;
 //!
 //! assert_eq!(Method::GET, Method::from_bytes(b"GET").unwrap());
 //! assert!(Method::GET.is_idempotent());
@@ -35,7 +35,7 @@ use std::{fmt, str};
 /// # Examples
 ///
 /// ```
-/// use http::Method;
+/// use httplike::Method;
 ///
 /// assert_eq!(Method::GET, Method::from_bytes(b"GET").unwrap());
 /// assert!(Method::GET.is_idempotent());

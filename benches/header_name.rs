@@ -1,10 +1,10 @@
 #![feature(test)]
 
 extern crate bytes;
-extern crate http;
+extern crate httplike;
 extern crate test;
 
-use http::header::HeaderName;
+use httplike::header::HeaderName;
 use test::Bencher;
 
 fn make_all_known_headers() -> Vec<Vec<u8>> {

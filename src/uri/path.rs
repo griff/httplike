@@ -110,7 +110,7 @@ impl PathAndQuery {
     /// # Examples
     ///
     /// ```
-    /// # use http::uri::*;
+    /// # use httplike::uri::*;
     /// let v = PathAndQuery::from_static("/hello?world");
     ///
     /// assert_eq!(v.path(), "/hello");
@@ -175,7 +175,7 @@ impl PathAndQuery {
     /// # Examples
     ///
     /// ```
-    /// # use http::uri::*;
+    /// # use httplike::uri::*;
     ///
     /// let path_and_query: PathAndQuery = "/hello/world".parse().unwrap();
     ///
@@ -216,7 +216,7 @@ impl PathAndQuery {
     /// With a query string component
     ///
     /// ```
-    /// # use http::uri::*;
+    /// # use httplike::uri::*;
     /// let path_and_query: PathAndQuery = "/hello/world?key=value&foo=bar".parse().unwrap();
     ///
     /// assert_eq!(path_and_query.query(), Some("key=value&foo=bar"));
@@ -225,7 +225,7 @@ impl PathAndQuery {
     /// Without a query string component
     ///
     /// ```
-    /// # use http::uri::*;
+    /// # use httplike::uri::*;
     /// let path_and_query: PathAndQuery = "/hello/world".parse().unwrap();
     ///
     /// assert!(path_and_query.query().is_none());
@@ -247,7 +247,7 @@ impl PathAndQuery {
     /// With a query string component
     ///
     /// ```
-    /// # use http::uri::*;
+    /// # use httplike::uri::*;
     /// let path_and_query: PathAndQuery = "/hello/world?key=value&foo=bar".parse().unwrap();
     ///
     /// assert_eq!(path_and_query.as_str(), "/hello/world?key=value&foo=bar");
@@ -256,7 +256,7 @@ impl PathAndQuery {
     /// Without a query string component
     ///
     /// ```
-    /// # use http::uri::*;
+    /// # use httplike::uri::*;
     /// let path_and_query: PathAndQuery = "/hello/world".parse().unwrap();
     ///
     /// assert_eq!(path_and_query.as_str(), "/hello/world");

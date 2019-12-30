@@ -17,7 +17,7 @@ pub struct Error {
     inner: ErrorKind,
 }
 
-/// A `Result` typedef to use with the `http::Error` type
+/// A `Result` typedef to use with the `httplike::Error` type
 pub type Result<T> = result::Result<T, Error>;
 
 enum ErrorKind {
@@ -31,7 +31,7 @@ enum ErrorKind {
 
 impl fmt::Debug for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.debug_tuple("http::Error")
+        f.debug_tuple("httplike::Error")
             // Skip the noise of the ErrorKind enum
             .field(&self.get_ref())
             .finish()

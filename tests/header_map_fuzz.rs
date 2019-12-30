@@ -1,5 +1,5 @@
-use http::header::*;
-use http::*;
+use httplike::header::*;
+use httplike::*;
 
 use quickcheck::{Arbitrary, Gen, QuickCheck, TestResult};
 use rand::rngs::StdRng;

@@ -31,9 +31,9 @@
 //! server you might want to inspect a requests URI to dispatch it:
 //!
 //! ```
-//! use http::{Request, Response};
+//! use httplike::{Request, Response};
 //!
-//! fn response(req: Request<()>) -> http::Result<Response<()>> {
+//! fn response(req: Request<()>) -> httplike::Result<Response<()>> {
 //!     match req.uri().path() {
 //!         "/" => index(req),
 //!         "/foo" => foo(req),
@@ -41,10 +41,10 @@
 //!         _ => not_found(req),
 //!     }
 //! }
-//! # fn index(_req: Request<()>) -> http::Result<Response<()>> { panic!() }
-//! # fn foo(_req: Request<()>) -> http::Result<Response<()>> { panic!() }
-//! # fn bar(_req: Request<()>) -> http::Result<Response<()>> { panic!() }
-//! # fn not_found(_req: Request<()>) -> http::Result<Response<()>> { panic!() }
+//! # fn index(_req: Request<()>) -> httplike::Result<Response<()>> { panic!() }
+//! # fn foo(_req: Request<()>) -> httplike::Result<Response<()>> { panic!() }
+//! # fn bar(_req: Request<()>) -> httplike::Result<Response<()>> { panic!() }
+//! # fn not_found(_req: Request<()>) -> httplike::Result<Response<()>> { panic!() }
 //! ```
 //!
 //! On a `Request` you'll also find accessors like `method` to return a
@@ -55,8 +55,8 @@
 //! to edit the request/response:
 //!
 //! ```
-//! use http::{HeaderValue, Response, StatusCode};
-//! use http::header::CONTENT_TYPE;
+//! use httplike::{HeaderValue, Response, StatusCode};
+//! use httplike::header::CONTENT_TYPE;
 //!
 //! fn add_server_headers<T>(response: &mut Response<T>) {
 //!     response.headers_mut()
@@ -99,7 +99,7 @@
 //! in the `header` module of this crate. For example:
 //!
 //! ```
-//! use http::header::{self, HeaderName};
+//! use httplike::header::{self, HeaderName};
 //!
 //! let name: HeaderName = header::ACCEPT;
 //! assert_eq!(name.as_str(), "accept");
@@ -108,7 +108,7 @@
 //! You can, however, also parse header names from strings:
 //!
 //! ```
-//! use http::header::{self, HeaderName};
+//! use httplike::header::{self, HeaderName};
 //!
 //! let name = "Accept".parse::<HeaderName>().unwrap();
 //! assert_eq!(name, header::ACCEPT);
@@ -118,7 +118,7 @@
 //! function:
 //!
 //! ```
-//! use http::HeaderValue;
+//! use httplike::HeaderValue;
 //!
 //! let value = HeaderValue::from_static("text/html");
 //! assert_eq!(value.as_bytes(), b"text/html");
@@ -127,7 +127,7 @@
 //! And header values can also be parsed like names:
 //!
 //! ```
-//! use http::HeaderValue;
+//! use httplike::HeaderValue;
 //!
 //! let value = "text/html";
 //! let value = value.parse::<HeaderValue>().unwrap();
@@ -147,8 +147,8 @@
 //! interpret it:
 //!
 //! ```
-//! use http::Uri;
-//! use http::uri::Scheme;
+//! use httplike::Uri;
+//! use httplike::uri::Scheme;
 //!
 //! let uri = "https://www.rust-lang.org/index.html".parse::<Uri>().unwrap();
 //!

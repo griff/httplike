@@ -1,18 +1,19 @@
 [package]
-name = "http"
+name = "httplike"
 # When releasing to crates.io:
 # - Update html_root_url in lib.rs.
 # - Update CHANGELOG.md.
 # - Create git tag
 version = "0.2.0"
 readme = "README.md"
-documentation = "https://docs.rs/http"
-repository = "https://github.com/hyperium/http"
+documentation = "https://docs.rs/httplike"
+repository = "https://github.com/griff/httplike"
 license = "MIT/Apache-2.0"
 authors = [
   "Alex Crichton <alex@alexcrichton.com>",
   "Carl Lerche <me@carllerche.com>",
   "Sean McArthur <sean@seanmonstar.com>",
+  "Brian Olsen <brian@maven-group.org>",
 ]
 description = """
 A set of types for representing HTTP requests and responses.

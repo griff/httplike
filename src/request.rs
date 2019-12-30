@@ -2,7 +2,7 @@
 //!
 //! This module contains structs related to HTTP requests, notably the
 //! `Request` type itself as well as a builder to create requests. Typically
-//! you'll import the `http::Request` type rather than reaching into this
+//! you'll import the `httplike::Request` type rather than reaching into this
 //! module itself.
 //!
 //! # Examples
@@ -10,7 +10,7 @@
 //! Creating a `Request` to send
 //!
 //! ```no_run
-//! use http::{Request, Response};
+//! use httplike::{Request, Response};
 //!
 //! let mut request = Request::builder()
 //!     .uri("https://www.rust-lang.org/")
@@ -35,9 +35,9 @@
 //! Inspecting a request to see what was sent.
 //!
 //! ```
-//! use http::{Request, Response, StatusCode};
+//! use httplike::{Request, Response, StatusCode};
 //!
-//! fn respond_to(req: Request<()>) -> http::Result<Response<()>> {
+//! fn respond_to(req: Request<()>) -> httplike::Result<Response<()>> {
 //!     if req.uri() != "/awesome-url" {
 //!         return Response::builder()
 //!             .status(StatusCode::NOT_FOUND)
@@ -73,7 +73,7 @@ use crate::{Extensions, Result, Uri};
 /// Creating a `Request` to send
 ///
 /// ```no_run
-/// use http::{Request, Response};
+/// use httplike::{Request, Response};
 ///
 /// let mut request = Request::builder()
 ///     .uri("https://www.rust-lang.org/")
@@ -98,9 +98,9 @@ use crate::{Extensions, Result, Uri};
 /// Inspecting a request to see what was sent.
 ///
 /// ```
-/// use http::{Request, Response, StatusCode};
+/// use httplike::{Request, Response, StatusCode};
 ///
-/// fn respond_to(req: Request<()>) -> http::Result<Response<()>> {
+/// fn respond_to(req: Request<()>) -> httplike::Result<Response<()>> {
 ///     if req.uri() != "/awesome-url" {
 ///         return Response::builder()
 ///             .status(StatusCode::NOT_FOUND)
@@ -120,8 +120,8 @@ use crate::{Extensions, Result, Uri};
 /// ```
 /// # extern crate serde;
 /// # extern crate serde_json;
-/// # extern crate http;
-/// use http::Request;
+/// # extern crate httplike;
+/// use httplike::Request;
 /// use serde::de;
 ///
 /// fn deserialize<T>(req: Request<Vec<u8>>) -> serde_json::Result<Request<T>>
@@ -140,8 +140,8 @@ use crate::{Extensions, Result, Uri};
 /// ```
 /// # extern crate serde;
 /// # extern crate serde_json;
-/// # extern crate http;
-/// use http::Request;
+/// # extern crate httplike;
+/// use httplike::Request;
 /// use serde::ser;
 ///
 /// fn serialize<T>(req: Request<T>) -> serde_json::Result<Request<Vec<u8>>>
@@ -200,7 +200,7 @@ impl Request<()> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request = Request::builder()
     ///     .method("GET")
     ///     .uri("https://www.rust-lang.org/")
@@ -221,7 +221,7 @@ impl Request<()> {
     /// # Example
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::get("https://www.rust-lang.org/")
     ///     .body(())
@@ -244,7 +244,7 @@ impl Request<()> {
     /// # Example
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::put("https://www.rust-lang.org/")
     ///     .body(())
@@ -267,7 +267,7 @@ impl Request<()> {
     /// # Example
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::post("https://www.rust-lang.org/")
     ///     .body(())
@@ -290,7 +290,7 @@ impl Request<()> {
     /// # Example
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::delete("https://www.rust-lang.org/")
     ///     .body(())
@@ -313,7 +313,7 @@ impl Request<()> {
     /// # Example
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::options("https://www.rust-lang.org/")
     ///     .body(())
@@ -337,7 +337,7 @@ impl Request<()> {
     /// # Example
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::head("https://www.rust-lang.org/")
     ///     .body(())
@@ -360,7 +360,7 @@ impl Request<()> {
     /// # Example
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::connect("https://www.rust-lang.org/")
     ///     .body(())
@@ -383,7 +383,7 @@ impl Request<()> {
     /// # Example
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::patch("https://www.rust-lang.org/")
     ///     .body(())
@@ -405,7 +405,7 @@ impl Request<()> {
     /// # Example
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::trace("https://www.rust-lang.org/")
     ///     .body(())
@@ -429,7 +429,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request = Request::new("hello world");
     ///
     /// assert_eq!(*request.method(), Method::GET);
@@ -448,7 +448,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request = Request::new("hello world");
     /// let (mut parts, body) = request.into_parts();
     /// parts.method = Method::POST;
@@ -468,7 +468,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request: Request<()> = Request::default();
     /// assert_eq!(*request.method(), Method::GET);
     /// ```
@@ -482,7 +482,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let mut request: Request<()> = Request::default();
     /// *request.method_mut() = Method::PUT;
     /// assert_eq!(*request.method(), Method::PUT);
@@ -497,7 +497,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request: Request<()> = Request::default();
     /// assert_eq!(*request.uri(), *"/");
     /// ```
@@ -511,7 +511,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let mut request: Request<()> = Request::default();
     /// *request.uri_mut() = "/hello".parse().unwrap();
     /// assert_eq!(*request.uri(), *"/hello");
@@ -526,7 +526,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request: Request<()> = Request::default();
     /// assert_eq!(request.version(), Version::HTTP_11);
     /// ```
@@ -540,7 +540,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let mut request: Request<()> = Request::default();
     /// *request.version_mut() = Version::HTTP_2;
     /// assert_eq!(request.version(), Version::HTTP_2);
@@ -555,7 +555,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request: Request<()> = Request::default();
     /// assert!(request.headers().is_empty());
     /// ```
@@ -569,8 +569,8 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
-    /// # use http::header::*;
+    /// # use httplike::*;
+    /// # use httplike::header::*;
     /// let mut request: Request<()> = Request::default();
     /// request.headers_mut().insert(HOST, HeaderValue::from_static("world"));
     /// assert!(!request.headers().is_empty());
@@ -585,7 +585,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request: Request<()> = Request::default();
     /// assert!(request.extensions().get::<i32>().is_none());
     /// ```
@@ -599,8 +599,8 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
-    /// # use http::header::*;
+    /// # use httplike::*;
+    /// # use httplike::header::*;
     /// let mut request: Request<()> = Request::default();
     /// request.extensions_mut().insert("hello");
     /// assert_eq!(request.extensions().get(), Some(&"hello"));
@@ -615,7 +615,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request: Request<String> = Request::default();
     /// assert!(request.body().is_empty());
     /// ```
@@ -629,7 +629,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let mut request: Request<String> = Request::default();
     /// request.body_mut().push_str("hello world");
     /// assert!(!request.body().is_empty());
@@ -644,7 +644,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::Request;
+    /// # use httplike::Request;
     /// let request = Request::new(10);
     /// let body = request.into_body();
     /// assert_eq!(body, 10);
@@ -659,7 +659,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request = Request::new(());
     /// let (parts, body) = request.into_parts();
     /// assert_eq!(parts.method, Method::GET);
@@ -675,7 +675,7 @@ impl<T> Request<T> {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     /// let request = Request::builder().body("some string").unwrap();
     /// let mapped_request: Request<&[u8]> = request.map(|b| {
     ///   assert_eq!(b, "some string");
@@ -747,7 +747,7 @@ impl Builder {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let req = request::Builder::new()
     ///     .method("POST")
@@ -769,7 +769,7 @@ impl Builder {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let req = Request::builder()
     ///     .method("POST")
@@ -795,7 +795,7 @@ impl Builder {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let mut req = Request::builder();
     /// assert_eq!(req.method_ref(),Some(&Method::GET));
@@ -817,7 +817,7 @@ impl Builder {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let req = Request::builder()
     ///     .uri("https://www.rust-lang.org/")
@@ -842,7 +842,7 @@ impl Builder {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let mut req = Request::builder();
     /// assert_eq!(req.uri_ref().unwrap(), "/" );
@@ -864,7 +864,7 @@ impl Builder {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let req = Request::builder()
     ///     .version(Version::HTTP_2)
@@ -887,8 +887,8 @@ impl Builder {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
-    /// # use http::header::HeaderValue;
+    /// # use httplike::*;
+    /// # use httplike::header::HeaderValue;
     ///
     /// let req = Request::builder()
     ///     .header("Accept", "text/html")
@@ -917,7 +917,7 @@ impl Builder {
     /// # Example
     ///
     /// ```
-    /// # use http::Request;
+    /// # use httplike::Request;
     /// let req = Request::builder()
     ///     .header("Accept", "text/html")
     ///     .header("X-Custom-Foo", "bar");
@@ -936,7 +936,7 @@ impl Builder {
     /// # Example
     ///
     /// ```
-    /// # use http::{header::HeaderValue, Request};
+    /// # use httplike::{header::HeaderValue, Request};
     /// let mut req = Request::builder();
     /// {
     ///   let headers = req.headers_mut().unwrap();
@@ -956,7 +956,7 @@ impl Builder {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let req = Request::builder()
     ///     .extension("My Extension")
@@ -990,7 +990,7 @@ impl Builder {
     /// # Examples
     ///
     /// ```
-    /// # use http::*;
+    /// # use httplike::*;
     ///
     /// let request = Request::builder()
     ///     .body(())

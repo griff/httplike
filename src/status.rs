@@ -2,12 +2,12 @@
 //!
 //! This module contains HTTP-status code related structs an errors. The main
 //! type in this module is `StatusCode` which is not intended to be used through
-//! this module but rather the `http::StatusCode` type.
+//! this module but rather the `httplike::StatusCode` type.
 //!
 //! # Examples
 //!
 //! ```
-//! use http::StatusCode;
+//! use httplike::StatusCode;
 //!
 //! assert_eq!(StatusCode::from_u16(200).unwrap(), StatusCode::OK);
 //! assert_eq!(StatusCode::NOT_FOUND, 404);
@@ -32,7 +32,7 @@ use std::str::FromStr;
 /// # Examples
 ///
 /// ```
-/// use http::StatusCode;
+/// use httplike::StatusCode;
 ///
 /// assert_eq!(StatusCode::from_u16(200).unwrap(), StatusCode::OK);
 /// assert_eq!(StatusCode::NOT_FOUND.as_u16(), 404);
@@ -58,7 +58,7 @@ impl StatusCode {
     /// # Example
     ///
     /// ```
-    /// use http::StatusCode;
+    /// use httplike::StatusCode;
     ///
     /// let ok = StatusCode::from_u16(200).unwrap();
     /// assert_eq!(ok, StatusCode::OK);
@@ -105,7 +105,7 @@ impl StatusCode {
     /// # Example
     ///
     /// ```
-    /// let status = http::StatusCode::OK;
+    /// let status = httplike::StatusCode::OK;
     /// assert_eq!(status.as_u16(), 200);
     /// ```
     #[inline]
@@ -121,7 +121,7 @@ impl StatusCode {
     /// # Example
     ///
     /// ```
-    /// let status = http::StatusCode::OK;
+    /// let status = httplike::StatusCode::OK;
     /// assert_eq!(status.as_str(), "200");
     /// ```
     #[inline]
@@ -144,7 +144,7 @@ impl StatusCode {
     /// # Example
     ///
     /// ```
-    /// let status = http::StatusCode::OK;
+    /// let status = httplike::StatusCode::OK;
     /// assert_eq!(status.canonical_reason(), Some("OK"));
     /// ```
     pub fn canonical_reason(&self) -> Option<&'static str> {
@@ -193,7 +193,7 @@ impl fmt::Debug for StatusCode {
 /// # Example
 ///
 /// ```
-/// # use http::StatusCode;
+/// # use httplike::StatusCode;
 /// assert_eq!(format!("{}", StatusCode::OK), "200 OK");
 /// ```
 impl fmt::Display for StatusCode {

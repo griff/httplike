@@ -9,7 +9,7 @@
 //! # Examples
 //!
 //! ```
-//! use http::Uri;
+//! use httplike::Uri;
 //!
 //! let uri = "/foo/bar?baz".parse::<Uri>().unwrap();
 //! assert_eq!(uri.path(), "/foo/bar");
@@ -80,7 +80,7 @@ mod tests;
 /// # Examples
 ///
 /// ```
-/// use http::Uri;
+/// use httplike::Uri;
 ///
 /// let uri = "/foo/bar?baz".parse::<Uri>().unwrap();
 /// assert_eq!(uri.path(), "/foo/bar");
@@ -182,7 +182,7 @@ impl Uri {
     /// # Examples
     ///
     /// ```
-    /// use http::Uri;
+    /// use httplike::Uri;
     ///
     /// let uri = Uri::builder()
     ///     .scheme("https")
@@ -313,7 +313,7 @@ impl Uri {
     /// # Examples
     ///
     /// ```
-    /// # use http::uri::Uri;
+    /// # use httplike::uri::Uri;
     /// let uri = Uri::from_static("http://example.com/foo");
     ///
     /// assert_eq!(uri.host().unwrap(), "example.com");
@@ -337,7 +337,7 @@ impl Uri {
     /// # Examples
     ///
     /// ```
-    /// # use http::uri::*;
+    /// # use httplike::uri::*;
     /// let uri: Uri = "/foo".parse().unwrap();
     ///
     /// let parts = uri.into_parts();
@@ -381,7 +381,7 @@ impl Uri {
     /// A relative URI
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     ///
     /// let uri: Uri = "/hello/world".parse().unwrap();
     ///
@@ -391,7 +391,7 @@ impl Uri {
     /// An absolute URI
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "http://example.org/hello/world".parse().unwrap();
     ///
     /// assert_eq!(uri.path(), "/hello/world");
@@ -424,7 +424,7 @@ impl Uri {
     /// Absolute URI
     ///
     /// ```
-    /// use http::uri::{Scheme, Uri};
+    /// use httplike::uri::{Scheme, Uri};
     ///
     /// let uri: Uri = "http://example.org/hello/world".parse().unwrap();
     ///
@@ -435,7 +435,7 @@ impl Uri {
     /// Relative URI
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "/hello/world".parse().unwrap();
     ///
     /// assert!(uri.scheme().is_none());
@@ -454,7 +454,7 @@ impl Uri {
     /// # Example
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "http://example.org/hello/world".parse().unwrap();
     ///
     /// assert_eq!(uri.scheme_str(), Some("http"));
@@ -492,7 +492,7 @@ impl Uri {
     /// Absolute URI
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "http://example.org:80/hello/world".parse().unwrap();
     ///
     /// assert_eq!(uri.authority().map(|a| a.as_str()), Some("example.org:80"));
@@ -502,7 +502,7 @@ impl Uri {
     /// Relative URI
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "/hello/world".parse().unwrap();
     ///
     /// assert!(uri.authority().is_none());
@@ -534,7 +534,7 @@ impl Uri {
     /// Absolute URI
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "http://example.org:80/hello/world".parse().unwrap();
     ///
     /// assert_eq!(uri.host(), Some("example.org"));
@@ -544,7 +544,7 @@ impl Uri {
     /// Relative URI
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "/hello/world".parse().unwrap();
     ///
     /// assert!(uri.host().is_none());
@@ -573,7 +573,7 @@ impl Uri {
     /// Absolute URI with port
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "http://example.org:80/hello/world".parse().unwrap();
     ///
     /// let port = uri.port().unwrap();
@@ -583,7 +583,7 @@ impl Uri {
     /// Absolute URI without port
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "http://example.org/hello/world".parse().unwrap();
     ///
     /// assert!(uri.port().is_none());
@@ -592,7 +592,7 @@ impl Uri {
     /// Relative URI
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "/hello/world".parse().unwrap();
     ///
     /// assert!(uri.port().is_none());
@@ -607,7 +607,7 @@ impl Uri {
     /// # Example
     ///
     /// ```
-    /// # use http::{Uri, uri::Port};
+    /// # use httplike::{Uri, uri::Port};
     /// let uri: Uri = "http://example.org:80/hello/world".parse().unwrap();
     ///
     /// assert_eq!(uri.port_u16(), Some(80));
@@ -636,7 +636,7 @@ impl Uri {
     /// Absolute URI
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "http://example.org/hello/world?key=value".parse().unwrap();
     ///
     /// assert_eq!(uri.query(), Some("key=value"));
@@ -645,7 +645,7 @@ impl Uri {
     /// Relative URI with a query string component
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "/hello/world?key=value&foo=bar".parse().unwrap();
     ///
     /// assert_eq!(uri.query(), Some("key=value&foo=bar"));
@@ -654,7 +654,7 @@ impl Uri {
     /// Relative URI without a query string component
     ///
     /// ```
-    /// # use http::Uri;
+    /// # use httplike::Uri;
     /// let uri: Uri = "/hello/world".parse().unwrap();
     ///
     /// assert!(uri.query().is_none());
@@ -730,7 +730,7 @@ impl<'a> TryFrom<&'a Uri> for Uri {
 /// Relative URI
 ///
 /// ```
-/// # use http::uri::*;
+/// # use httplike::uri::*;
 /// let mut parts = Parts::default();
 /// parts.path_and_query = Some("/foo".parse().unwrap());
 ///
@@ -745,7 +745,7 @@ impl<'a> TryFrom<&'a Uri> for Uri {
 /// Absolute URI
 ///
 /// ```
-/// # use http::uri::*;
+/// # use httplike::uri::*;
 /// let mut parts = Parts::default();
 /// parts.scheme = Some("http".parse().unwrap());
 /// parts.authority = Some("foo.com".parse().unwrap());

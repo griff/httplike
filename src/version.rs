@@ -2,7 +2,7 @@
 //!
 //! This module contains a definition of the `Version` type. The `Version`
 //! type is intended to be accessed through the root of the crate
-//! (`http::Version`) rather than this module.
+//! (`httplike::Version`) rather than this module.
 //!
 //! The `Version` type contains constants that represent the various versions
 //! of the HTTP protocol.
@@ -10,7 +10,7 @@
 //! # Examples
 //!
 //! ```
-//! use http::Version;
+//! use httplike::Version;
 //!
 //! let http11 = Version::HTTP_11;
 //! let http2 = Version::HTTP_2;
